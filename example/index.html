@@ -66,13 +66,12 @@
   L.esri.basemapLayer('Gray').addTo(map);
 
   var waterNetwork = L.esri.dynamicMapLayer(
-    'http://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/MapServer', {
+    'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/MapServer', {
     useCors: false
   }).addTo(map);
 
   waterNetwork.legend(function(error, legend){
     if(!error) {
-        console.log(legend);
         var html = '<ul>';
         for(var i = 0, len = legend.layers.length; i < len; i++) {
             html += '<li><strong>' + legend.layers[i].layerName + '</strong><ul>';
