@@ -10,6 +10,32 @@ separately and will be released later**
 
 ### [Example](https://w8r.github.io/esri-leaflet-legend/example/)
 
+```js
+var map = L.map('map', {maxZoom: 20}).setView([ 41.78408507289525, -88.13716292381285], 18);
+
+L.esri.basemapLayer('Gray').addTo(map);
+
+var waterNetwork = L.esri.dynamicMapLayer(
+    'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/MapServer', {
+    useCors: false
+}).addTo(map);
+
+waterNetwork.legend(function(error, legend){
+    if(!error) {
+        var html = '<ul>';
+        for(var i = 0, len = legend.layers.length; i < len; i++) {
+            html += '<li><strong>' + legend.layers[i].layerName + '</strong><ul>';
+            for(var j = 0, jj = legend.layers[i].legend.length; j < jj; j++){
+                html += L.Util.template('<li><img width="{width}" height="{height}" src="data:{contentType};base64,{imageData}"><span>{label}</span></li>', legend.layers[i].legend[j]);
+            }
+            html += '</ul></li>';
+        }
+        html+='</ul>';
+        document.getElementById('legend').innerHTML = html;
+    }
+});
+```
+
 ### Approach with symbols
 
 For featureservers(and ArcGIS servers <= 10.0 with no `legend` API) I want to mimic
