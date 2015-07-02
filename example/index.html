@@ -1,0 +1,91 @@
+<html>
+<head>
+  <meta charset=utf-8 />
+  <title>Getting service metadata</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+  <!-- Load Leaflet from CDN-->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/leaflet/0.7.3/leaflet.css" />
+  <script src="//cdn.jsdelivr.net/leaflet/0.7.3/leaflet.js"></script>
+
+  <!-- Load Esri Leaflet from CDN -->
+  <!-- we encourage you to replace 'latest' with a hardcode version number (like '1.0.0-rc.7') in production applications -->
+  <script src="//cdn.jsdelivr.net/leaflet.esri/latest/esri-leaflet.js"></script>
+  <!-- Load Esri Leaflet Renderers -->
+  <script src="//cdn-geoweb.s3.amazonaws.com/esri-leaflet-renderers/0.0.1-beta.3/esri-leaflet-renderers.js"></script>
+  <script src="../../dist/esri-leaflet-legend-src.js"></script>
+
+  <style>
+    body { margin:0; padding:0; }
+    #map { position: absolute; top:0; bottom:0; right:0; left:0; }
+  </style>
+</head>
+<body>
+
+<style>
+  #info {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    background: white;
+    padding: 1em;
+    height: 300px;
+    overflow: auto;
+    font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+  }
+
+  #legend ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+  }
+
+  #legend ul li img {
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  #legend ul li span {
+    vertical-align: top;
+    line-height: 22px;
+  }
+
+  #legend ul ul {
+    margin-left: 15px;
+  }
+</style>
+
+<div id="map"></div>
+<div id="info" class="leaflet-bar">
+    <div id="legend"></div>
+</div>
+<script>
+  var map = L.map('map', {maxZoom: 20}).setView([ 41.78408507289525, -88.13716292381285], 18);
+
+  L.esri.basemapLayer('Gray').addTo(map);
+
+  var waterNetwork = L.esri.dynamicMapLayer(
+    'http://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/MapServer', {
+    useCors: false
+  }).addTo(map);
+
+  waterNetwork.legend(function(error, legend){
+    if(!error) {
+        console.log(legend);
+        var html = '<ul>';
+        for(var i = 0, len = legend.layers.length; i < len; i++) {
+            html += '<li><strong>' + legend.layers[i].layerName + '</strong><ul>';
+            for(var j = 0, jj = legend.layers[i].legend.length; j < jj; j++){
+                html += L.Util.template('<li><img width="{width}" height="{height}" src="data:{contentType};base64,{imageData}"><span>{label}</span></li>', legend.layers[i].legend[j]);
+            }
+            html += '</ul></li>';
+        }
+        html+='</ul>';
+        document.getElementById('legend').innerHTML = html;
+    }
+  });
+</script>
+
+</body>
+</html>
