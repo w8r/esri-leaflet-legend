@@ -42,7 +42,7 @@ For featureservers(and ArcGIS servers <= 10.0 with no `legend` API) I want to mi
 the API with the data taken from layer definitions. So the symbols have to be rendered
 into `<canvas>` and exported as base64. But `esriPMS` and `esriPFS` symbols are
 problematic: I can't get CORS patterns to work, no solution with avoiding cacheing
-or '<img crossOrigin=''>` seem to work. Suggestions are appreciated.
+or `<img crossOrigin=''>` seem to work. Suggestions are appreciated.
 
 ### Development Instructions
 
