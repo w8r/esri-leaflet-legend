@@ -21,18 +21,23 @@ module.exports = function(grunt) {
     '}));';
 
   var complete = [
+    'src/Util.js',
     'src/Services/MapService.js',
     'src/Tasks/Legend.js',
-    'src/Layers/DynamicMapLayer.js'
+    'src/Layers/DynamicMapLayer.js',
+    'src/Controls/Legend.js'
   ];
 
   var symbols = [
+    'src/Util.js',
     'src/Services/MapService.js',
+    'src/Services/FeatureLayer.js',
     'src/Tasks/Legend.js',
     'src/Tasks/Legend/SymbolLegend.js',
     'src/Tasks/Legend/SymbolRenderer.js',
     'src/Layers/DynamicMapLayer.js',
     'src/Layers/FeatureLayer/FeatureLayer.js',
+    'src/Controls/Legend.js'
   ];
 
   // Project configuration.
@@ -134,6 +139,7 @@ module.exports = function(grunt) {
     connect: {
       server: {
         options: {
+          https: true,
           port: 8000,
           base: '.',
           keepalive: true

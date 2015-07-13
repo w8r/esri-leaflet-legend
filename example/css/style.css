@@ -1,0 +1,30 @@
+body { margin:0; padding:0; }
+#map { position: absolute; top:0; bottom:0; right:0; left:0; }
+
+.leaflet-legend-control {
+    background: white;
+    padding: 1em;
+    max-height: 300px;
+    overflow: auto;
+    font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+.leaflet-legend-control ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.leaflet-legend-control ul li img {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.leaflet-legend-control ul li span {
+    vertical-align: top;
+    line-height: 22px;
+}
+
+.leaflet-legend-control ul ul {
+    margin-left: 15px;
+}

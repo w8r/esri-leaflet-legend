@@ -5,6 +5,7 @@
   "eqeqeq": true,
   "immed": true,
   "latedef": true,
+  "loopfunc":true,
   "newcap": true,
   "noempty": true,
   "nonew": true,

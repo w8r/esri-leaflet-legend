@@ -10,6 +10,8 @@ separately and will be released later**
 
 ### [Example](https://w8r.github.io/esri-leaflet-legend/example/)
 
+* [Example with feature layers](https://w8r.github.io/esri-leaflet-legend/example/featureserver.html)
+
 ```js
 var map = L.map('map', {maxZoom: 20}).setView([ 41.78408507289525, -88.13716292381285], 18);
 

@@ -23,6 +23,7 @@ module.exports = function(config) {
       'src/Services/MapService.js',
       'src/Tasks/Legend.js',
       'src/Tasks/Legend/SymbolRenderer.js',
+      'src/Tasks/Legend/SymbolLegend.js',
       'spec/**/*Spec.js'
     ],
 

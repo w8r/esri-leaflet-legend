@@ -9,6 +9,12 @@ EsriLeaflet.Tasks.Legend.include({
     function cb(error, response) {
       if (error && error.error.code === 400) { // ArcGIS server >=10.0
         this._collectLegendFromLayers(callback, context);
+      } else if (response.drawingInfo) {
+        this._symbolsToLegends([response], function(err, result) {
+          callback.call(context, err, {
+            layers: result
+          });
+        });
       } else {
         callback.call(context, error, response);
       }
@@ -26,12 +32,14 @@ EsriLeaflet.Tasks.Legend.include({
       if (error) {
         return callback.call(context, error);
       }
+
       var layers = [];
       for (var i = 0, len = response.layers.length; i < len; i++) {
         if (!response.layers[i].subLayerIds) {
           layers.push(response.layers[i]);
         }
       }
+
       this._getLayersLegends(layers, function(err, layerData) {
         if (err) {
           callback.call(context, err);
@@ -47,28 +55,19 @@ EsriLeaflet.Tasks.Legend.include({
   },
 
   _getLayersLegends: function(layerDefs, callback, context) {
-    var layer = layerDefs.pop();
     var layerData = [];
+    var self = this;
 
-    if (!layer) {
-      callback.call(this, null, layerData);
-    }
-
-    // queue
-    function layerDataReceived(err, data) {
-      if (err) {
-        callback.call(context, err);
-      } else {
-        layerData.push(data);
-        layer = layerDefs.pop();
-        if (layer) {
-          this._getLayerLegend(layer, layerDataReceived, this);
-        } else {
-          callback.call(context, null, layerData);
+    EsriLeaflet.Util.reduce(layerDefs, [], function(curr, layer, cb) {
+      self._getLayerLegend(layer, function(err, data) {
+        if (err) {
+          return cb(err, null);
         }
-      }
-    }
-    this._getLayerLegend(layer, layerDataReceived, this);
+        cb(null, curr.concat(data));
+      }, self);
+    }, function(err, result) {
+      callback.call(context, err, result);
+    });
   },
 
   _getLayerLegend: function(layer, callback, context) {
@@ -78,69 +77,74 @@ EsriLeaflet.Tasks.Legend.include({
   },
 
   _symbolsToLegends: function(layerData, callback, context) {
-    var result = [];
-    var layer = layerData.pop();
+    var self = this;
+    EsriLeaflet.Util.reduce(layerData, [], function(curr, layer, cb) {
+      self._drawingInfoToLegend(layer.drawingInfo, function(err, legend) {
+        if (err) {
+          return cb(err, null);
+        }
+        cb(null, curr.concat([{
+          layerId: layer.id,
+          layerType: layer.type,
+          layerName: layer.name,
+          maxScale: layer.maxScale,
+          minScale: layer.minScale,
+          legend: legend
+        }]));
+      }, self);
+    }, function(err, result) {
+      callback.call(context, err, result);
+    });
+  },
 
-    function legendReady(err, legend) {
-      if (err) {
-        callback.call(context, err);
-      }
-      result.push({
-        layerId: layer.id,
-        layerType: layer.type,
-        layerName: layer.name,
-        maxScale: layer.maxScale,
-        minScale: layer.minScale,
-        legend: legend
+  _getRendererSymbols: function(renderer) {
+    var symbols;
+    if (renderer.type === 'uniqueValue') {
+      symbols = renderer.uniqueValueInfos.slice();
+    } else if (renderer.type === 'classBreaks') {
+      symbols = renderer.classBreakInfos.slice();
+    } else if (renderer.type === 'simple') {
+      symbols = [{
+        symbol: renderer.symbol,
+        label: renderer.label,
+        description: renderer.description,
+        value: renderer.value
+      }];
+    }
+    if (renderer.defaultSymbol) {
+      symbols.push({
+        symbol: renderer.defaultSymbol,
+        label: renderer.defaultLabel,
+        description: '',
+        value: null
       });
-
-      layer = layerData.pop();
-      if (layer) {
-        this._drawingInfoToLegend(layer.drawingInfo, legendReady, this);
-      } else {
-        callback.call(context, null, result);
-      }
     }
-
-    if (layer) {
-      this._drawingInfoToLegend(layer.drawingInfo, legendReady, this);
-    }
-    return result;
+    return symbols;
   },
 
   _drawingInfoToLegend: function(drawingInfo, callback, context) {
-    var uniqueValueInfos = drawingInfo.renderer.type === 'uniqueValue' ?
-      drawingInfo.renderer.uniqueValueInfos.slice() :
-      [drawingInfo.renderer];
-    var legend = [];
-    var symbol = uniqueValueInfos.pop();
-
-    function symbolRendered(error, image) {
-      if (error) {
-        return callback.call(context, error);
-      }
-
-      legend.push({
-        label: symbol.label,
-        height: image.height,
-        url: symbol.symbol.url,
-        imageData: image.imageData,
-        contentType: image.contentType,
-        width: image.width,
-        values: [symbol.value || '']
+    var self = this;
+    EsriLeaflet.Util.reduce(
+      this._getRendererSymbols(drawingInfo.renderer), [],
+      function(curr, symbol, cb) {
+        self._renderSymbol(symbol, function(err, image) {
+          if (err) {
+            return cb(err, curr);
+          }
+          cb(null, curr.concat([{
+            label: symbol.label,
+            height: image.height,
+            url: symbol.symbol.url,
+            imageData: image.imageData,
+            contentType: image.contentType,
+            width: image.width,
+            values: [symbol.value || '']
+          }]));
+        }, self);
+      },
+      function(err, legend) {
+        callback.call(context, err, legend);
       });
-
-      symbol = uniqueValueInfos.pop();
-      if (symbol) {
-        this._renderSymbol(symbol, symbolRendered, this);
-      } else {
-        callback.call(context, null, legend);
-      }
-    }
-
-    if (symbol) {
-      this._renderSymbol(symbol, symbolRendered, this);
-    }
   },
 
   _renderSymbol: function(symbol, callback, context) {
