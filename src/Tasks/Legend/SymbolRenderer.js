@@ -119,8 +119,10 @@ EsriLeaflet.Tasks.Legend.SymbolRenderer = L.Class.extend({
       ctx.strokeStyle = this._formatColor(symbol.outline.color);
       ctx.lineWidth = symbol.outline.width;
       ctx.fillStyle = this._formatColor([0, 0, 0, 0]);
+      this._setDashArray(ctx, symbol.outline);
       ctx.rect(symbol.outline.width, symbol.outline.width,
         size - symbol.outline.width, size - symbol.outline.width);
+      ctx.stroke();
     }
 
     callback(null, ctx.canvas.toDataURL());
@@ -142,23 +144,28 @@ EsriLeaflet.Tasks.Legend.SymbolRenderer = L.Class.extend({
   },
 
   _renderMarker: function(ctx, symbol, callback) {
-    var xoffset = symbol.xoffset;
-    var yoffset = symbol.yoffset;
+    var xoffset = 0;
+    var yoffset = 0;
     var size = symbol.size;
     var r, rx, ry;
+
     ctx.beginPath();
 
     if (symbol.outline) {
       ctx.strokeStyle = this._formatColor(symbol.outline.color);
       ctx.lineWidth = symbol.outline.width;
+      xoffset += symbol.outline.width;
+      yoffset += symbol.outline.width;
     }
 
     this._setRotation(ctx, symbol.angle);
 
     switch (symbol.style) {
       case 'esriSMSCircle':
+        ctx.fillStyle = this._formatColor(symbol.color);
         r = (size - 2 * xoffset) / 2;
         ctx.arc(r + xoffset, r + xoffset, r, 0, 2 * Math.PI, false);
+        ctx.fill();
         break;
 
       case 'esriSMSX':
@@ -176,13 +183,18 @@ EsriLeaflet.Tasks.Legend.SymbolRenderer = L.Class.extend({
         break;
 
       case 'esriSMSDiamond':
-        rx = (size - xoffset) / 2;
-        ry = (size - yoffset) / 2;
+        ctx.fillStyle = this._formatColor(symbol.color);
+        rx = (size - 2 * xoffset) / 2;
+        ry = (size - 2 * yoffset) / 2;
+
+        console.log(symbol);
+
         ctx.moveTo(xoffset, yoffset + ry);
         ctx.lineTo(xoffset + rx, yoffset);
         ctx.lineTo(xoffset + rx * 2, yoffset + ry);
         ctx.lineTo(xoffset + rx, yoffset + 2 * ry);
         ctx.lineTo(xoffset, yoffset + ry);
+        ctx.fill();
         break;
 
       case 'esriSMSSquare':
@@ -190,12 +202,14 @@ EsriLeaflet.Tasks.Legend.SymbolRenderer = L.Class.extend({
         break;
 
       case 'esriSMSTriangle':
+        ctx.fillStyle = this._formatColor(symbol.color);
         rx = (size - 2 * xoffset) / 2;
         ry = (size - 2 * yoffset) / 2;
         ctx.moveTo(xoffset, yoffset + ry * 2);
         ctx.lineTo(xoffset + rx, yoffset);
         ctx.lineTo(xoffset + rx * 2, yoffset + ry * 2);
         ctx.lineTo(xoffset, yoffset + ry * 2);
+        ctx.fill();
         break;
 
       default:
@@ -315,16 +329,29 @@ EsriLeaflet.Tasks.Legend.SymbolRenderer = L.Class.extend({
     return ctx.toDImageData(0, 0, symbol.width, symbol.height);
   },
 
-  _fillImage: function(ctx, imageData, size, contentType, image) {
+  _fillImage: function(ctx, imageData, symbol, contentType, image) {
+    var size = L.EsriLeaflet.Tasks.Legend.DEFAULT_SIZE;
+    var w = symbol.width || size;
+    var h = symbol.height || size;
     if (imageData) {
       image = new Image();
       image.src = 'data:' + contentType + ';base64,' + imageData;
     }
 
     var pattern = ctx.createPattern(image, 'repeat');
-    ctx.rect(0, 0, size.width, size.height);
+    ctx.rect(0, 0, w, h);
     ctx.fillStyle = pattern;
     ctx.fill();
+
+    if (symbol.outline) {
+      ctx.strokeStyle = this._formatColor(symbol.outline.color);
+      ctx.lineWidth = symbol.outline.width;
+      ctx.fillStyle = this._formatColor([0, 0, 0, 0]);
+      this._setDashArray(ctx, symbol.outline);
+      ctx.rect(symbol.outline.width, symbol.outline.width,
+        w - symbol.outline.width, h - symbol.outline.width);
+      ctx.stroke();
+    }
   },
 
   _drawImage: function(ctx, imageData, contentType) {
