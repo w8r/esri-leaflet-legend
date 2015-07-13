@@ -61,7 +61,6 @@ EsriLeaflet.Tasks.Legend.SymbolRenderer = L.Class.extend({
   },
 
   _renderText: function(ctx, symbol, callback) {
-    console.log(symbol);
     callback(null, ctx.canvas.toDataURL());
   },
 
@@ -186,8 +185,6 @@ EsriLeaflet.Tasks.Legend.SymbolRenderer = L.Class.extend({
         ctx.fillStyle = this._formatColor(symbol.color);
         rx = (size - 2 * xoffset) / 2;
         ry = (size - 2 * yoffset) / 2;
-
-        console.log(symbol);
 
         ctx.moveTo(xoffset, yoffset + ry);
         ctx.lineTo(xoffset + rx, yoffset);

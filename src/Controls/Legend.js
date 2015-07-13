@@ -1,5 +1,12 @@
 EsriLeaflet.Controls.Legend = L.Control.extend({
 
+  options: {
+    listTemplate: '<ul>{layers}</ul>',
+    layerTemplate: '<li><strong>{layerName}</strong><ul>{legends}</ul></li>',
+    listRowTemplate: '<li><img width="{width}" height="{height}" src="data:{contentType};base64,{imageData}"><span>{label}</span></li>',
+    emptyLabel: '<all values>'
+  },
+
   initialize: function(layers, options) {
     this._layers = L.Util.isArray(layers) ? layers : [layers];
     L.Control.prototype.initialize.call(this, options);
@@ -33,26 +40,29 @@ EsriLeaflet.Controls.Legend = L.Control.extend({
 
   _onLoad: function(error, legend) {
     if (!error) {
-      var html = '<ul>';
+      var layersHtml = '';
       for (var i = 0, len = legend.layers.length; i < len; i++) {
-        html += '<li><strong>' + legend.layers[i].layerName + '</strong><ul>';
-        for (var j = 0, jj = legend.layers[i].legend.length; j < jj; j++) {
-          var layerLegend = legend.layers[i].legend[j];
+        var layer = legend.layers[i];
+        var legendsHtml = '';
+        for (var j = 0, jj = layer.legend.length; j < jj; j++) {
+          var layerLegend = layer.legend[j];
           this._validateLegendLabel(layerLegend);
-          html += L.Util.template(
-            '<li><img width="{width}" height="{height}" src="data:{contentType};base64,{imageData}"><span>{label}</span></li>',
-            layerLegend);
+          legendsHtml += L.Util.template(this.options.listRowTemplate, layerLegend);
         }
-        html += '</ul></li>';
+        layersHtml += L.Util.template(this.options.layerTemplate, {
+          layerName: layer.layerName,
+          legends: legendsHtml
+        });
       }
-      html += '</ul>';
-      this._container.innerHTML = html;
+      this._container.innerHTML = L.Util.template(this.options.listTemplate, {
+        layers: layersHtml
+      });
     }
   },
 
   _validateLegendLabel: function(layerLegend) {
-    if (!layerLegend.label) {
-      layerLegend.label = '<all values>';
+    if (!layerLegend.label && this.options.emptyLabel) {
+      layerLegend.label = this.options.emptyLabel;
     }
     layerLegend.label = layerLegend.label.replace(/&/g, '&amp;')
       .replace(/"/g, '&quot;')

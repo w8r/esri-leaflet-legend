@@ -38,6 +38,42 @@ waterNetwork.legend(function(error, legend){
 });
 ```
 
+### Legend Control
+
+`L.esri.Controls.Legend` will render symbology for a single or multiple layers,
+loading the data and rendering it in a queue. That can take some time, but it's
+a lot of requests(one per each feature layer).
+
+```js
+var map = L.map('map').setView([...], 12);
+L.esri.Controls.legend([dynamicLayer, featureLayer], {position: 'topright'}).addTo(map);
+```
+
+You can also adjust the templates for legend output:
+
+```js
+{
+    listTemplate: '<ul>{layers}</ul>',
+    layerTemplate: '<li><strong>{layerName}</strong><ul>{legends}</ul></li>',
+    listRowTemplate: '<li><img width="{width}" \
+                               height="{height}" \
+                               src="data:{contentType};base64,{imageData}">\
+                           <span>{label}</span>\
+                      </li>',
+    emptyLabel: '<all values>'
+}
+```
+
+### Legend task
+
+```js
+var f = new L.esri.Layers.FeatureLayer('/some/arcgis/rest/services/xxx/FeatureServer/0', {}).addTo(map);
+f.legend(function(error, legend) {  /* same format as /legend API */  });
+// or
+var m = L.esri.Services.MapService('some/MapServer/', {});
+m.legend(function(error, legend) {  /* same format as /legend API */  });
+```
+
 ### Approach with symbols
 
 For featureservers(and ArcGIS servers <= 10.0 with no `legend` API) I want to mimic
@@ -46,11 +82,13 @@ into `<canvas>` and exported as base64. But `esriPMS` and `esriPFS` symbols are
 problematic: I can't get CORS patterns to work, no solution with avoiding cacheing
 or `<img crossOrigin=''>` seem to work. Suggestions are appreciated.
 
+`esriST` is not implemented yet - cannot find a working example.
+
 ### Development Instructions
 
 Make sure you have the [Grunt CLI](http://gruntjs.com/getting-started) installed.
 
-1. [Fork and clone Esri Leaflet Renderers](https://help.github.com/articles/fork-a-repo)
+1. [Fork and clone](https://help.github.com/articles/fork-a-repo)
 2. `cd` into the `esri-leaflet-legend` folder
 5. Install the dependencies with `npm install`
 5. run `grunt` from the command line. This will create minified source, run linting, and start watching the source files for changes.
@@ -59,7 +97,8 @@ Make sure you have the [Grunt CLI](http://gruntjs.com/getting-started) installed
 ### Dependencies
 
 * Leaflet version 0.7 or higher is required but the latest version is recommended.
-* Esri Leaflet
+* [Esri-Leaflet](https://github.com/esri/esri-leaflet/)
+* Probably, [Esri-leaflet-renderers](https://github.com/esri/esri-leaflet-renderers/) for feature layers
 
 ### Licensing
 
