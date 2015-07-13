@@ -25,7 +25,7 @@ EsriLeaflet.Util.reduce = function(values, initial, fn, cb, context) {
       var done = false;
       fn(curr, values[i], function(err, val) {
         if (err) {
-          return cb.callback(context, err, curr);
+          return cb.call(context, err, curr);
         }
         done = true;
         curr = val;
