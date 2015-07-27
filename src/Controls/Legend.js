@@ -4,7 +4,8 @@ EsriLeaflet.Controls.Legend = L.Control.extend({
     listTemplate: '<ul>{layers}</ul>',
     layerTemplate: '<li><strong>{layerName}</strong><ul>{legends}</ul></li>',
     listRowTemplate: '<li><img width="{width}" height="{height}" src="data:{contentType};base64,{imageData}"><span>{label}</span></li>',
-    emptyLabel: '<all values>'
+    emptyLabel: '<all values>',
+    container: null
   },
 
   initialize: function(layers, options) {
@@ -13,7 +14,8 @@ EsriLeaflet.Controls.Legend = L.Control.extend({
   },
 
   onAdd: function(map) {
-    var container = L.DomUtil.create('div', 'leaflet-legend-control leaflet-bar');
+    var container = this.options.container ||
+        L.DomUtil.create('div', 'leaflet-legend-control leaflet-bar');
     L.DomEvent
       .disableScrollPropagation(container)
       .disableClickPropagation(container);
