@@ -150,7 +150,7 @@ EsriLeaflet.Controls.Legend = L.Control.extend({
         var layer = legend.layers[i];
         var legendsHtml = '';
         for (var j = 0, jj = layer.legend.length; j < jj; j++) {
-          var layerLegend = layer.legend[j];
+          var layerLegend = JSON.parse(JSON.stringify(layer.legend[j]));
           this._validateLegendLabel(layerLegend);
           legendsHtml += L.Util.template(this.options.listRowTemplate, layerLegend);
         }
