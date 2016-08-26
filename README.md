@@ -1,4 +1,4 @@
-# Esri Leaflet Legend
+# Esri Leaflet Legend  [![npm version](https://badge.fury.io/js/esri-leaflet-legend.svg)](https://badge.fury.io/js/esri-leaflet-legend) [![CircleCI](https://circleci.com/gh/w8r/esri-leaflet-legend.svg?style=svg)](https://circleci.com/gh/w8r/esri-leaflet-legend)
 
 Esri leaflet plugin for retrieving map service legends. Also aimed to cover the
 lack of similar API for FeatureServers and render the symbols from layer definitions.
