@@ -1,6 +1,6 @@
 {
   "name": "esri-leaflet-legend",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "Layer legend plugin for esri-leaflet",
   "main": "dist/esri-leaflet-legend.js",
   "scripts": {
