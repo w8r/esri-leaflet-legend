@@ -4,8 +4,8 @@ var map = L.map('map', {
 
 L.esri.basemapLayer('Gray').addTo(map);
 
-var waterNetwork = L.esri.dynamicMapLayer(
-  'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/MapServer', {
+var waterNetwork = L.esri.dynamicMapLayer({
+    url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Water_Network/MapServer',
     useCors: false
   }).addTo(map);
 

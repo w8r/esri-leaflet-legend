@@ -21,7 +21,8 @@ describe('L.esri.Layers.DynamicMapLayer', function() {
 
   beforeEach(function() {
     server = sinon.fakeServer.create();
-    layer = L.esri.dynamicMapLayer(url, {
+    layer = L.esri.dynamicMapLayer({
+      url: url,
       f: 'json'
     });
     map = createMap();
