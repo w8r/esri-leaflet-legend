@@ -1,4 +1,4 @@
-EsriLeaflet.Controls.Legend = L.Control.extend({
+EsriLeaflet.LegendControl = L.Control.extend({
 
   options: {
     listTemplate: '<ul>{layers}</ul>',
@@ -75,6 +75,6 @@ EsriLeaflet.Controls.Legend = L.Control.extend({
 
 });
 
-EsriLeaflet.Controls.legend = function(layers, options) {
-  return new L.esri.Controls.Legend(layers, options);
+EsriLeaflet.legendControl = function(layers, options) {
+  return new L.esri.LegendControl(layers, options);
 };

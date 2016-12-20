@@ -1,15 +1,15 @@
-EsriLeaflet.Tasks.Legend.include({
+EsriLeaflet.Legend.include({
 
   initialize: function(endpoint) {
-    this._renderer = new EsriLeaflet.Tasks.Legend.SymbolRenderer();
-    EsriLeaflet.Tasks.Task.prototype.initialize.call(this, endpoint);
+    this._renderer = new EsriLeaflet.Legend.SymbolRenderer();
+    EsriLeaflet.Task.prototype.initialize.call(this, endpoint);
   },
 
   run: function(callback, context) {
     function cb(error, response) {
-      if (error && error.error.code === 400) { // ArcGIS server >=10.0
+      if (error && error.code === 400) { // ArcGIS server >=10.0
         this._collectLegendFromLayers(callback, context);
-      } else if (response.drawingInfo) {
+      } else if (response && response.drawingInfo) {
         this._symbolsToLegends([response], function(err, result) {
           callback.call(context, err, {
             layers: result

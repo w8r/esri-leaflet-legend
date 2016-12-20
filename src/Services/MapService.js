@@ -1,7 +1,7 @@
-EsriLeaflet.Services.MapService.include({
+EsriLeaflet.MapService.include({
 
   legend: function(callback, context) {
-    return new EsriLeaflet.Tasks.Legend(this).run(callback, context);
+    return new EsriLeaflet.Legend(this).run(callback, context);
   }
 
 });

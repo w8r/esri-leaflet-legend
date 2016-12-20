@@ -157,7 +157,7 @@ module.exports = function(grunt) {
 
   // Require all grunt modules
   require('load-grunt-tasks')(grunt, {
-    pattern: ['grunt-*', 'assemble']
+    pattern: ['grunt-*', 'grunt-assemble']
   });
 
 };

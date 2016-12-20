@@ -17,4 +17,4 @@ layers.push(new L.esri.featureLayer({
     useCors: false
   }).addTo(map));
 
-L.esri.Controls.legend(layers).addTo(map);
+L.esri.legendControl(layers).addTo(map);

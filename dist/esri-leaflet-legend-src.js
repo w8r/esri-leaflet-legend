@@ -61,16 +61,16 @@ EsriLeaflet.Util.reduce = function(values, initial, fn, cb, context) {
 };
 
 
-EsriLeaflet.Services.MapService.include({
+EsriLeaflet.MapService.include({
 
   legend: function(callback, context) {
-    return new EsriLeaflet.Tasks.Legend(this).run(callback, context);
+    return new EsriLeaflet.Legend(this).run(callback, context);
   }
 
 });
 
 
-EsriLeaflet.Tasks.Legend = EsriLeaflet.Tasks.Task.extend({
+EsriLeaflet.Legend = EsriLeaflet.Task.extend({
   path: 'legend',
 
   params: {
@@ -87,21 +87,21 @@ EsriLeaflet.Tasks.Legend = EsriLeaflet.Tasks.Task.extend({
 
 });
 
-EsriLeaflet.Tasks.legend = function(params) {
-  return new EsriLeaflet.Tasks.Legend(params);
+EsriLeaflet.legend = function(params) {
+  return new EsriLeaflet.Legend(params);
 };
 
 
-EsriLeaflet.Layers.DynamicMapLayer.include({
+EsriLeaflet.DynamicMapLayer.include({
 
   legend: function(callback, context) {
-    return this._service.legend(callback, context);
+    return this.service.legend(callback, context);
   }
 
 });
 
 
-EsriLeaflet.Controls.Legend = L.Control.extend({
+EsriLeaflet.LegendControl = L.Control.extend({
 
   options: {
     listTemplate: '<ul>{layers}</ul>',
@@ -178,8 +178,8 @@ EsriLeaflet.Controls.Legend = L.Control.extend({
 
 });
 
-EsriLeaflet.Controls.legend = function(layers, options) {
-  return new L.esri.Controls.Legend(layers, options);
+EsriLeaflet.legendControl = function(layers, options) {
+  return new L.esri.LegendControl(layers, options);
 };
 
 
