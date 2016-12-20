@@ -1,7 +1,7 @@
-EsriLeaflet.Layers.FeatureLayer.include({
+EsriLeaflet.FeatureLayer.include({
 
   legend: function(callback, context) {
-    return this._service.legend(callback, context);
+    return this.service.legend(callback, context);
   }
 
 });

@@ -1,4 +1,4 @@
-EsriLeaflet.Tasks.Legend = EsriLeaflet.Tasks.Task.extend({
+EsriLeaflet.Legend = EsriLeaflet.Task.extend({
   path: 'legend',
 
   params: {
@@ -15,6 +15,6 @@ EsriLeaflet.Tasks.Legend = EsriLeaflet.Tasks.Task.extend({
 
 });
 
-EsriLeaflet.Tasks.legend = function(params) {
-  return new EsriLeaflet.Tasks.Legend(params);
+EsriLeaflet.legend = function(params) {
+  return new EsriLeaflet.Legend(params);
 };

@@ -1,4 +1,4 @@
-describe('L.esri.Layers.DynamicMapLayer', function() {
+describe('L.esri.DynamicMapLayer', function() {
 
   function createMap() {
     // create container
@@ -33,10 +33,10 @@ describe('L.esri.Layers.DynamicMapLayer', function() {
     map.remove();
   });
 
-  it('should expose the legend method on the underlying service', function() {
-    var spy = sinon.spy(layer._service, 'legend');
+  it('should expose the legend method on the underlying service', function(done) {
+    var spy = sinon.spy(layer.service, 'legend');
     server.respondWith('GET',
-      'http://services.arcgis.com/mock/arcgis/rest/services/MockService/MapServer/legend?f=json', JSON.stringify({
+      'http://services.arcgis.com/mock/arcgis/rest/services/MockMapService/MapServer/legend?f=json', JSON.stringify({
         foo: 'bar'
       }));
 

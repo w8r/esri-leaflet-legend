@@ -61,25 +61,25 @@ EsriLeaflet.Util.reduce = function(values, initial, fn, cb, context) {
 };
 
 
-EsriLeaflet.Services.MapService.include({
+EsriLeaflet.MapService.include({
 
   legend: function(callback, context) {
-    return new EsriLeaflet.Tasks.Legend(this).run(callback, context);
+    return new EsriLeaflet.Legend(this).run(callback, context);
   }
 
 });
 
 
-EsriLeaflet.Services.FeatureLayerService.include({
+EsriLeaflet.FeatureLayerService.include({
 
   legend: function(callback, context) {
-    return new EsriLeaflet.Tasks.Legend(this).run(callback, context);
+    return new L.esri.Legend(this).run(callback, context);
   }
 
 });
 
 
-EsriLeaflet.Tasks.Legend = EsriLeaflet.Tasks.Task.extend({
+EsriLeaflet.Legend = EsriLeaflet.Task.extend({
   path: 'legend',
 
   params: {
@@ -96,23 +96,23 @@ EsriLeaflet.Tasks.Legend = EsriLeaflet.Tasks.Task.extend({
 
 });
 
-EsriLeaflet.Tasks.legend = function(params) {
-  return new EsriLeaflet.Tasks.Legend(params);
+EsriLeaflet.legend = function(params) {
+  return new EsriLeaflet.Legend(params);
 };
 
 
-EsriLeaflet.Tasks.Legend.include({
+EsriLeaflet.Legend.include({
 
   initialize: function(endpoint) {
-    this._renderer = new EsriLeaflet.Tasks.Legend.SymbolRenderer();
-    EsriLeaflet.Tasks.Task.prototype.initialize.call(this, endpoint);
+    this._renderer = new EsriLeaflet.Legend.SymbolRenderer();
+    EsriLeaflet.Task.prototype.initialize.call(this, endpoint);
   },
 
   run: function(callback, context) {
     function cb(error, response) {
-      if (error && error.error.code === 400) { // ArcGIS server >=10.0
+      if (error && error.code === 400) { // ArcGIS server >=10.0
         this._collectLegendFromLayers(callback, context);
-      } else if (response.drawingInfo) {
+      } else if (response && response.drawingInfo) {
         this._symbolsToLegends([response], function(err, result) {
           callback.call(context, err, {
             layers: result
@@ -257,7 +257,7 @@ EsriLeaflet.Tasks.Legend.include({
 });
 
 
-EsriLeaflet.Tasks.Legend.SymbolRenderer = L.Class.extend({
+EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
 
   statics: {
     SYMBOL_TYPES: {
@@ -387,7 +387,7 @@ EsriLeaflet.Tasks.Legend.SymbolRenderer = L.Class.extend({
   },
 
   _renderLine: function(ctx, symbol, callback) {
-    var size = EsriLeaflet.Tasks.Legend.SymbolRenderer.DEFAULT_SIZE;
+    var size = EsriLeaflet.Legend.SymbolRenderer.DEFAULT_SIZE;
     ctx.beginPath();
     ctx.lineWidth = symbol.width;
     ctx.strokeStyle = this._formatColor(symbol.color);
@@ -510,7 +510,7 @@ EsriLeaflet.Tasks.Legend.SymbolRenderer = L.Class.extend({
       ctx.width = ctx.height = symbol.size;
     } else if (symbol.type === 'esriSLS' ||
       symbol.type === 'esriSFS') {
-      ctx.width = ctx.height = EsriLeaflet.Tasks.Legend.SymbolRenderer.DEFAULT_SIZE;
+      ctx.width = ctx.height = EsriLeaflet.Legend.SymbolRenderer.DEFAULT_SIZE;
     } else {
       ctx.width = symbol.width;
       ctx.height = symbol.height;
@@ -586,7 +586,7 @@ EsriLeaflet.Tasks.Legend.SymbolRenderer = L.Class.extend({
   },
 
   _fillImage: function(ctx, imageData, symbol, contentType, image) {
-    var size = L.EsriLeaflet.Tasks.Legend.DEFAULT_SIZE;
+    var size = L.esri.Legend.DEFAULT_SIZE;
     var w = symbol.width || size;
     var h = symbol.height || size;
     if (imageData) {
@@ -634,25 +634,25 @@ EsriLeaflet.Tasks.Legend.SymbolRenderer = L.Class.extend({
 });
 
 
-EsriLeaflet.Layers.DynamicMapLayer.include({
+EsriLeaflet.DynamicMapLayer.include({
 
   legend: function(callback, context) {
-    return this._service.legend(callback, context);
+    return this.service.legend(callback, context);
   }
 
 });
 
 
-EsriLeaflet.Layers.FeatureLayer.include({
+EsriLeaflet.FeatureLayer.include({
 
   legend: function(callback, context) {
-    return this._service.legend(callback, context);
+    return this.service.legend(callback, context);
   }
 
 });
 
 
-EsriLeaflet.Controls.Legend = L.Control.extend({
+EsriLeaflet.LegendControl = L.Control.extend({
 
   options: {
     listTemplate: '<ul>{layers}</ul>',
@@ -729,8 +729,8 @@ EsriLeaflet.Controls.Legend = L.Control.extend({
 
 });
 
-EsriLeaflet.Controls.legend = function(layers, options) {
-  return new L.esri.Controls.Legend(layers, options);
+EsriLeaflet.legendControl = function(layers, options) {
+  return new L.esri.LegendControl(layers, options);
 };
 
 

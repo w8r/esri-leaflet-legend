@@ -5,13 +5,14 @@
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
   <!-- Load Leaflet from CDN-->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/leaflet/0.7.7/leaflet.css" />
-  <script src="//cdn.jsdelivr.net/leaflet/0.7.7/leaflet.js"></script>
+  <link rel="stylesheet" href="//unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+  <script src="//unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
 
   <!-- Load Esri Leaflet from CDN -->
-  <script src="//cdn.jsdelivr.net/leaflet.esri/1.0.0/esri-leaflet.js"></script>
+  <!-- we encourage you to replace 'latest' with a hardcode version number (like '1.0.0-rc.7') in production applications -->
+  <script src="//unpkg.com/esri-leaflet@2.0.6/dist/esri-leaflet-debug.js"></script>
   <!-- Load Esri Leaflet Renderers -->
-  <script src="//cdn-geoweb.s3.amazonaws.com/esri-leaflet-renderers/0.0.1-beta.3/esri-leaflet-renderers.js"></script>
+  <script src="//unpkg.com/esri-leaflet-renderers@2.0.4/dist/esri-leaflet-renderers-debug.js"></script>
   <script src="../dist/esri-leaflet-legend-compat-src.js"></script>
   <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>

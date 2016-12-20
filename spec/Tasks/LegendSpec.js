@@ -1,4 +1,4 @@
-describe('L.esri.Tasks.Legend', function() {
+describe('L.esri.Legend', function() {
   function createMap() {
     // create container
     var container = document.createElement('div');
@@ -43,7 +43,7 @@ describe('L.esri.Tasks.Legend', function() {
 
   beforeEach(function() {
     server = sinon.fakeServer.create();
-    task = L.esri.Tasks.legend({
+    task = L.esri.legend({
       url: mapServiceUrl
     });
   });
@@ -81,7 +81,7 @@ describe('L.esri.Tasks.Legend', function() {
   });
 
   it('should use a service to execute the request', function(done) {
-    var service = L.esri.Services.mapService({
+    var service = L.esri.mapService({
       url: mapServiceUrl
     });
 

@@ -9,4 +9,4 @@ var waterNetwork = L.esri.dynamicMapLayer({
     useCors: false
   }).addTo(map);
 
-L.esri.Controls.legend(waterNetwork).addTo(map);
+L.esri.legendControl(waterNetwork).addTo(map);
