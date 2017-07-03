@@ -28,7 +28,7 @@
   "homepage": "https://github.com/w8r/esri-leaflet-legend#readme",
   "dependencies": {
     "esri-leaflet": "^2.0.6",
-    "leaflet": "^1.0.2"
+    "leaflet": "~1.0.2"
   },
   "devDependencies": {
     "assemble": "^0.17.1",

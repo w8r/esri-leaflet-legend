@@ -8,9 +8,9 @@ legend data([see format](http://resources.arcgis.com/en/help/arcgis-rest-api/ind
 **The legend task for mapservers is ready & tested, feature layers part is developed
 separately and will be released later**
 
-### [Example](https://w8r.github.io/esri-leaflet-legend/example/)
+### [Example](https://w8r.github.io/esri-leaflet-legend/example/) (Leaflet `1.0.x`)
 
-* [Example with feature layers](https://w8r.github.io/esri-leaflet-legend/example/featureserver.html)
+* [Example with feature layers](https://w8r.github.io/esri-leaflet-legend/example/featureserver.html) (Leaflet `0.7.x`)
 
 ```js
 var map = L.map('map', {maxZoom: 20}).setView([ 41.78408507289525, -88.13716292381285], 18);
@@ -102,5 +102,5 @@ Make sure you have the [Grunt CLI](http://gruntjs.com/getting-started) installed
 
 ### Licensing
 
-MIT
+[MIT](LICENSE)
 
