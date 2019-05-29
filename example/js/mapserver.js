@@ -9,4 +9,9 @@ var waterNetwork = L.esri.dynamicMapLayer({
     useCors: false
   }).addTo(map);
 
-L.esri.legendControl(waterNetwork).addTo(map);
+var wildfire = L.esri.dynamicMapLayer({
+    url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Wildfire/MapServer',
+    useCors:false
+}).addTo(map);
+
+L.esri.legendControl([waterNetwork,wildfire]).addTo(map);

@@ -106,8 +106,8 @@ EsriLeaflet.LegendControl = L.Control.extend({
   options: {
     listTemplate: '<ul>{layers}</ul>',
     layerTemplate: '<li><strong>{layerName}</strong><ul>{legends}</ul></li>',
-    listRowTemplate: '<li><img alt="map legend icon representing {layerName}" width="{width}" height="{height}" src="data:{contentType};base64,{imageData}"><span>{label}</span></li>',
-    emptyLabel: '<all values>',
+    listRowTemplate: '<li><img alt="map legend icon representing {label}" width="{width}" height="{height}" src="data:{contentType};base64,{imageData}"><span>{label}</span></li>',
+    emptyLabel: '<all values>',       
     container: null
   },
 
@@ -168,13 +168,13 @@ EsriLeaflet.LegendControl = L.Control.extend({
   _validateLegendLabel: function(layerLegend) {
     if (!layerLegend.label && this.options.emptyLabel) {
       layerLegend.label = this.options.emptyLabel;
-    }
+    } 
     layerLegend.label = layerLegend.label.replace(/&/g, '&amp;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
-  }
+  },  
 
 });
 
