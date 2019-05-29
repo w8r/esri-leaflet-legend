@@ -28,7 +28,7 @@ waterNetwork.legend(function(error, legend){
         for(var i = 0, len = legend.layers.length; i < len; i++) {
             html += '<li><strong>' + legend.layers[i].layerName + '</strong><ul>';
             for(var j = 0, jj = legend.layers[i].legend.length; j < jj; j++){
-                html += L.Util.template('<li><img alt="map legend icon representing {layerName}" width="{width}" height="{height}" src="data:{contentType};base64,{imageData}"><span>{label}</span></li>', legend.layers[i].legend[j]);
+                html += L.Util.template('<li><img alt="map legend icon representing {label}" width="{width}" height="{height}" src="data:{contentType};base64,{imageData}"><span>{label}</span></li>', legend.layers[i].legend[j]);
             }
             html += '</ul></li>';
         }
@@ -55,7 +55,7 @@ You can also adjust the templates for legend output:
 {
     listTemplate: '<ul>{layers}</ul>',
     layerTemplate: '<li><strong>{layerName}</strong><ul>{legends}</ul></li>',
-    listRowTemplate: '<li><img alt="map legend icon representing {layerName}" width="{width}" \
+    listRowTemplate: '<li><img alt="map legend icon representing {label}" width="{width}" \
                                height="{height}" \
                                src="data:{contentType};base64,{imageData}">\
                            <span>{label}</span>\
