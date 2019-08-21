@@ -115,7 +115,9 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
     }
 
     if (symbol.outline) {
-      ctx.strokeStyle = this._formatColor(symbol.outline.color);
+      //if the outline color is not avaialable use the symbol color
+      var _color = symbol.outline.color ? symbol.outline.color : symbol.color;
+      ctx.strokeStyle = this._formatColor(_color);
       ctx.lineWidth = symbol.outline.width;
       ctx.fillStyle = this._formatColor([0, 0, 0, 0]);
       this._setDashArray(ctx, symbol.outline);
@@ -151,7 +153,9 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
     ctx.beginPath();
 
     if (symbol.outline) {
-      ctx.strokeStyle = this._formatColor(symbol.outline.color);
+      //if the outline color is not avaialable use the symbol color
+      var _color = symbol.outline.color ? symbol.outline.color : symbol.color;
+      ctx.strokeStyle = this._formatColor(_color);
       ctx.lineWidth = symbol.outline.width;
       xoffset += symbol.outline.width;
       yoffset += symbol.outline.width;
@@ -291,6 +295,10 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
   },
 
   _formatColor: function(color) {
+    //if the color is null or undefined set transparent as default.
+    if(color === undefined || color === null){
+      color = [0,0,0,0];
+    }
     return 'rgba(' + color.slice(0, 3).join(',') + ',' + color[3] / 255 + ')';
   },
 
@@ -341,7 +349,9 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
     ctx.fill();
 
     if (symbol.outline) {
-      ctx.strokeStyle = this._formatColor(symbol.outline.color);
+      //if the outline color is not avaialable use the symbol color
+      var _color = symbol.outline.color ? symbol.outline.color : symbol.color;
+      ctx.strokeStyle = this._formatColor(_color);
       ctx.lineWidth = symbol.outline.width;
       ctx.fillStyle = this._formatColor([0, 0, 0, 0]);
       this._setDashArray(ctx, symbol.outline);
