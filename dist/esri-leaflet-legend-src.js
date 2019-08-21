@@ -10,7 +10,7 @@
   }
 
   if(typeof window !== 'undefined' && window.L){
-    factory(window.L, L.esri);
+    factory(window.L, L.esri = (L.esri || require('esri-leaflet')));
   }
 }(function (L, EsriLeaflet) {
 

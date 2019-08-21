@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     '    module.exports = factory(require(\'leaflet\'), require(\'esri-leaflet\'));\n' +
     '  }\n\n' +
     '  if(typeof window !== \'undefined\' && window.L){\n' +
-    '    factory(window.L, L.esri);\n' +
+    '    factory(window.L, L.esri = (L.esri || require(\'esri-leaflet\')));\n' +
     '  }\n' +
     '}(function (L, EsriLeaflet) {\n\n';
 
